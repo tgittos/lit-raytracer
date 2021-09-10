@@ -1,0 +1,63 @@
+== Ray ==
+A ray is a vector cast from the camera into the scene
+that represents a beam of light coming INTO the
+camera. It is used to test whether or not objects can
+be seen by the camera, and if so, what their color
+contribution is.
+
+== Getters for origin and direction ==
+-
+glm::vec3 GetOrigin() { return _origin; }
+glm::vec3 GetDirection() { return _direction; }
+-
+
+== Constructor ==
+Pass the origin and the direction vectors into the
+constructor
+-
+Ray(glm::vec3 origin, glm::vec3 direction);
+-
+
+== Private variables ==
+Private variables include:
+* A vector representing the ray's origin
+* A vector representing the ray's direction
+-
+glm::vec3 _origin;
+glm::vec3 _direction;
+-
+
+== The class ==
+-
+class Ray {
+  public:
+  Constructor.
+  ~Ray(){};
+
+  Getters for origin and direction.
+
+  private:
+  Private variables.
+};
+-
+
+== Includes ==
+-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+-
+
+== Include guard ==
+-
+#ifndef RAY_H
+#define RAY_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Ray.hpp ==
+Include guard.

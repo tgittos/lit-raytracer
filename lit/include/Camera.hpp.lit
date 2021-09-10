@@ -1,0 +1,81 @@
+== Camera ==
+The camera defines the projection plane and coordinate
+system that the ray tracer is going to render the scene
+into.
+It has a position, a look at point and an up vector and
+a field of view along the y axis.
+
+== Get ray for pixel ==
+The primary job of the camera in a ray tracer is to
+correctly generate a ray that goes from the pixel through
+the projection plane at a certain pixel.
+This method will take an x,y location of a pixel and
+the camera will return a vector that represents a ray
+shooting into the scene.
+-
+Ray GetRayForPixel(int x, int y, int w, int h);
+-
+
+== Constructor with params ==
+Allow us to pass in values all at once during construction
+rather than using getters and setters.
+
+This will also generate a coordinate frame properly from
+the give vectors.
+-
+Camera(int posX, int posY, int posZ,
+       int lookAtX, int lookAtY, int lookAtZ,
+       int upX, int upY, int upZ,
+       int fovy);
+-
+
+== Private variables ==
+Private variables include:
+* position vector
+* lookat vector
+* up vector
+* a field of view y axis
+-
+glm::vec3 _position;
+glm::vec3 _u;
+glm::vec3 _v;
+glm::vec3 _w;
+int _fovy;
+-
+
+== The class ==
+-
+class Camera {
+  public:
+  Camera(){};
+  Constructor with params.
+  ~Camera(){};
+
+  Get ray for pixel.
+
+  private:
+  Private variables.
+};
+-
+
+== Includes ==
+-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include "Ray.hpp"
+-
+
+== Include guard ==
+-
+#ifndef CAMERA_H
+#define CAMERA_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Camera.hpp ==
+Include guard.

@@ -1,0 +1,45 @@
+== Intersectable ==
+Intersectable is an interface for any object that
+implements an intersect method. We need this
+abstraction because we're going to be performing
+intersects on both objects that are renderable and
+abstract objects like bounding boxes and spatial
+data structures.
+
+== Intersect ==
+Pure virtual for an interface
+-
+virtual Intersection* Intersect(Ray ray, float t_max) = 0;
+-
+
+== The class ==
+-
+class Intersectable {
+  public:
+  Intersectable(){};
+  ~Intersectable(){};
+
+  Intersect.
+};
+-
+
+== Includes ==
+-
+#include "Intersection.hpp"
+#include "Ray.hpp"
+-
+
+== Include guard ==
+-
+#ifndef INTERSECTABLE_H
+#define INTERSECTABLE_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Intersectable.hpp ==
+Include guard.

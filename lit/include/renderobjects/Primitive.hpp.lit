@@ -1,0 +1,94 @@
+== Primitive ==
+A primitive render object has a single mesh,
+and a single material.
+
+== Intersects ==
+Delegates the intersection method to the geometry.
+-
+Intersection* Intersects(const Ray ray, float t_max);
+-
+
+== Get color ==
+Consult the material for the color. The material
+encapsulates the shading algorithm.
+For now, just return red.
+-
+glm::vec3 GetColor(std::vector<Light*> lights, Intersection* intersection, glm::vec3 reflectColor);
+-
+
+== Get material ==
+-
+Material* GetMaterial() { return _material; }
+-
+
+== Get bounding box ==
+-
+BoundingBox GetBoundingBox() { return _geometry->GetBoundingBox(); }
+-
+
+== Constructor ==
+Pass in the geometry (and later the material)
+for the primitive
+-
+Primitive(Shape* geometry, Material* material);
+-
+
+== Private variables ==
+* the geometry of the primitive
+* the material of the primitive
+-
+Shape* _geometry;
+Material* _material;
+-
+
+== Rule of threes ==
+Usually when we define a destructor for a class,
+we should define a copy constructor and a copy operator
+overload.
+
+However, in this instance, a shallow copy of a Primitive is
+acceptable. We won't want to duplicate the handlers and
+image data, so copies will essentially be handles.
+
+== The class ==
+-
+class Primitive : public RenderObject {
+  public:
+  Constructor.
+  ~Primitive();
+
+  Intersects.
+  Get color.
+  Get material.
+  Get bounding box.
+
+  private:
+  Private variables.
+};
+-
+
+== Includes ==
+-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "RenderObject.hpp"
+#include "Shape.hpp"
+#include "Material.hpp"
+#include "BoundingBox.hpp"
+-
+
+== Include guard ==
+-
+#ifndef PRIMITIVE_H
+#define PRIMITIVE_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Primitive.hpp ==
+Include guard.

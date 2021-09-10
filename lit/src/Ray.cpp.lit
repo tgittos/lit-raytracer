@@ -1,0 +1,24 @@
+== Ray ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Constructor ==
+-
+Ray::Ray(glm::vec3 origin, glm::vec3 direction)
+  :_origin(origin), _direction(direction) {}
+-
+
+== Includes ==
+-
+#include "Ray.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+-
+
+== @Ray.cpp ==
+Wrapper.

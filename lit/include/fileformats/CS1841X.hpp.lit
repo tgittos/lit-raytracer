@@ -1,0 +1,244 @@
+== CS1841X ==
+This is the file format used in edx's CS 184.1X.
+It's fairly tricky to work with.
+See the FileFormat abstract class for details on
+each method.
+
+== Read into scene ==
+-
+void ReadIntoScene(Scene* scene);
+-
+
+== Commands ==
+Once we have loaded in the file describing the scene
+we will have to parse and execute on commands.
+
+Each of these commands manipulates the scene in some
+way, whether creating geometry or cameras or lights,
+or setting the size of the scene and material settings.
+
+== Command handler function pointer type ==
+Instead of having one big ugly switch statement to
+handle commands coming from a file, I'm going to map
+each command to a handler. To do this, I need a type
+that encapsulates the function pointer.
+-
+struct CommandHandler {
+  CS1841X* object;
+  void (CS1841X::*handlerPointer)(std::queue<std::string>);
+
+  CommandHandler(CS1841X* o, void (CS1841X::*h)(std::queue<std::string>))
+    : object(o), handlerPointer(h) {}
+};
+-
+
+== Initialize the handlers ==
+We need to seed the command handlers manually because
+C++ isn't nice and dynamic.
+-
+void InitHandlers();
+-
+
+== Size command ==
+Set the size of the rendered image and scene.
+-
+void SizeHandler(std::queue<std::string> args);
+-
+
+== Output command ==
+Set the name of the file to output to.
+-
+void OutputHandler(std::queue<std::string> args);
+-
+
+== Camera command ==
+Set up the camera used to shoot rays
+-
+void CameraHandler(std::queue<std::string> args);
+-
+
+== Sphere command ==
+Set up a Sphere shape to perform hit tests against
+-
+void SphereHandler(std::queue<std::string> args);
+-
+
+== Directional light command ==
+-
+void DirectionalHandler(std::queue<std::string> args);
+-
+
+== Point light command ==
+-
+void PointHandler(std::queue<std::string> args);
+-
+
+== Vertex command ==
+-
+void VertexHandler(std::queue<std::string> args);
+-
+
+== Tri command ==
+-
+void TriHandler(std::queue<std::string> args);
+-
+
+== Ambient command ==
+Set the ambient term on the material that's in the
+material buffer.
+-
+void AmbientHandler(std::queue<std::string> args);
+-
+
+== Diffuse command ==
+Same as ambient command, only with the diffuse term.
+-
+void DiffuseHandler(std::queue<std::string> args);
+-
+
+== Specular command ==
+Same as ambient command, only with specular term.
+-
+void SpecularHandler(std::queue<std::string> args);
+-
+
+== Emission command ==
+Same as ambient command, only with emission term.
+-
+void EmissionHandler(std::queue<std::string> args);
+-
+
+== Shininess command ==
+Same as ambient command, only with shininess term.
+-
+void ShininessHandler(std::queue<std::string> args);
+-
+
+== Push and pop transform command ==
+Reset the transforms matrix to be the identity
+matrix. Both of them do the same thing.
+-
+void PushTransformHandler(std::queue<std::string> args);
+void PopTransformHandler(std::queue<std::string> args);
+-
+
+== Scale command ==
+Multiply a scale matrix onto the transform stack
+-
+void ScaleHandler(std::queue<std::string> args);
+-
+
+== Translate command ==
+Multiply a translate matrix onto the transform stack
+-
+void TranslateHandler(std::queue<std::string> args);
+-
+
+== Rotate command ==
+Multiply a rotation matrix onto the transform stack
+-
+void RotateHandler(std::queue<std::string> args);
+-
+
+== Max depth command ==
+Set the maximum recursion depth in the ray tracer
+-
+void MaxDepthHandler(std::queue<std::string> args);
+-
+
+== Attenuation command ==
+Set the attenuation on the materials
+-
+void AttenuationHandler(std::queue<std::string> args);
+-
+
+== Constructor ==
+-
+CS1841X(std::string filename);
+-
+
+== Private variables ==
+-
+Scene* _scene;
+std::map<const std::string, CommandHandler*> _handlers;
+TriMesh* _meshBuffer;
+Material* _materialBuffer;
+std::vector<glm::vec3> _vertexBuffer;
+std::stack<glm::mat4> _transforms;
+glm::vec3 _min;
+glm::vec3 _max;
+-
+
+== The class ==
+-
+class CS1841X : public FileFormat {
+  public:
+  Constructor.
+  ~CS1841X();
+
+  Command handler function pointer type.
+
+  Read into scene.
+
+  private:
+  Private variables.
+
+  Initialize the handlers.
+
+  Size command.
+  Output command.
+  Camera command.
+  Sphere command.
+  Directional light command.
+  Point light command.
+  Vertex command.
+  Tri command.
+  Ambient command.
+  Diffuse command.
+  Specular command.
+  Emission command.
+  Shininess command.
+  Push and pop transform command.
+  Scale command.
+  Translate command.
+  Rotate command.
+  Max depth command.
+  Attenuation command.
+};
+-
+
+== Includes ==
+-
+#include <map>
+#include <string>
+#include <stack>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "FileFormat.hpp"
+-
+
+== Forward declarations ==
+-
+class TriMesh;
+class Material;
+class Scene;
+-
+
+== Include guard ==
+-
+#ifndef CS1841_X_H
+#define CS1841_X_H
+
+Includes.
+
+Forward declarations.
+
+The class.
+
+#endif
+-
+
+== @CS1841X.hpp ==
+Include guard.

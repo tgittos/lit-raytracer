@@ -1,0 +1,70 @@
+== Sphere ==
+Write a description on what this class responsible for,
+and what it does at a 10,000ft view.
+Do not cover how it does what it does. That is for the
+class implementation.
+
+== Intersects ==
+Determines if a ray will intersect with this sphere.
+-
+Intersection* Intersects(const Ray ray, float t_max);
+-
+
+== Get bounding box ==
+Apply the transformation on this object and return
+a new bounding box.
+-
+BoundingBox GetBoundingBox();
+-
+
+== Constructor ==
+A sphere has a location in the world, and a radius.
+-
+Sphere(float x, float y, float z, float radius);
+-
+
+== Private variables ==
+Private variables include:
+* x coord
+* y coord
+* z coord
+* radius
+-
+float _x, _y, _z, _radius;
+-
+
+== The class ==
+-
+class Sphere : public Shape {
+  public:
+  Constructor.
+  ~Sphere(){};
+
+  Get bounding box.
+
+  Intersects.
+
+  private:
+  Private variables.
+};
+-
+
+== Includes ==
+-
+#include "Shape.hpp"
+-
+
+== Include guard ==
+-
+#ifndef SPHERE_H
+#define SPHERE_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Sphere.hpp ==
+Include guard.

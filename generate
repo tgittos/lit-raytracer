@@ -1,0 +1,60 @@
+#! /usr/bin/env ruby
+
+# Create skeletons of source files of every test so that
+# tests will build.
+
+# Add generators directory to Ruby load path
+$: << './generators' unless $:.include? './generators'
+
+# Add in ActiveRecords titleize method
+class String
+  def titleize
+    split(/(\W)/).map(&:capitalize).join
+  end
+end
+
+# Add in ActiveResource's underscore method
+class String
+  def underscore
+    self.gsub(/::/, '/').
+    gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+    gsub(/([a-z\d])([A-Z])/,'\1_\2').
+    tr("-", "_").
+    downcase
+  end
+end
+
+# Add in ActiveResource's constantize method
+class String
+  def constantize
+    self.split("::").inject(Module) {|acc, val| acc.const_get(val)}
+  end
+end
+
+def load_generator(name)
+  begin
+    require "#{name}.rb"
+  rescue LoadError
+    abort "Cannot find generator for #{name}"
+  end
+end
+
+def get_class(name)
+  klass = name.titleize
+  klass = "Klass" if klass == "Class"
+  klass.constantize
+end
+
+def usage
+  <<-EOS
+  generate [#{Dir.entries("generators").reject{|f| f =~ /^\./}.collect{|f| f.gsub(/\.rb/,'')}.join('|')}] [name]
+  EOS
+end
+
+abort usage if ARGV.count < 2 && !%w{makefile}.include?(ARGV.first)
+load_generator ARGV.first
+if ARGV.length == 2
+  get_class(ARGV.first).generate ARGV.last
+else
+  get_class(ARGV.first).generate
+end

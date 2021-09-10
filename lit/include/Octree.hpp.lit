@@ -1,0 +1,152 @@
+== Octree ==
+An octree is a spatial data structure that divides
+a scene into 8 cctree nodes, with each axis axis
+split by a plane, and objects being put into their
+appropriate node.
+
+Each octree node has a bounding box, and a list of
+RenderObjects it encompasses. It also has an
+intersect test method that will first test if a
+given ray intersects with the node's bounding box,
+and if so, finds the intersection for the contained
+object.
+
+The octree itself also has an intersect method that
+will test each node and return the final intersection,
+if any.
+
+Any objects that overlap will be placed in both nodes
+they could belong to.
+
+== Octree constructor ==
+Taking a list of RenderObjects, and min and max coords
+of the scene, split the scene into 8 nodes
+and insert render objects into each one.
+-
+Octree(std::vector<RenderObject*> objects, glm::vec3 min, glm::vec3 max);
+-
+
+== Octree node constructor ==
+Given a min and max coord, create a bounding box
+for the node.
+-
+OctreeNode(glm::vec3 min, glm::vec3 max);
+-
+
+== Add RenderObject to node ==
+Insert a RenderObject into an octree node.
+-
+void Insert(RenderObject* object);
+-
+
+== Octree node intersect ==
+Determine if a given ray intersects with the bounding
+box for the node. If so, find which RenderObject
+intersects with the ray and return that intersection.
+-
+Intersection* Intersects(Ray ray, float t_max);
+-
+
+== Octree intersect ==
+Get an intersection from each node and return it.
+-
+Intersection* Intersects(Ray ray, float t_max);
+-
+
+== Bounding box overlap ==
+Determine if two 3D bounding boxes have any overlap.
+If they do, then the object that bounding box belongs
+to should be put into the octant.
+-
+bool BoundingBoxOverlaps(glm::vec3 aMin, glm::vec3 aMax, glm::vec3 bMin, glm::vec3 bMax);
+-
+
+== Private octree node variables ==
+* a bounding box
+* a list of render objects
+-
+BoundingBox* _bb;
+std::vector<RenderObject*> _objects;
+-
+
+== Get node counts ==
+-
+int GetNodeCounts() { return _objects.size(); }
+-
+
+== Get octree node bounding box ==
+-
+BoundingBox* GetBoundingBox() { return _bb; }
+-
+
+== Private octree variables ==
+* a list of nodes
+-
+std::vector<OctreeNode> _nodes;
+-
+
+== The octree node class ==
+-
+class OctreeNode {
+  public:
+  Octree node constructor.
+  ~OctreeNode();
+
+  Get octree node bounding box.
+
+  Octree node intersect.
+
+  Add RenderObject to node.
+
+  Get node counts.
+
+  private:
+  Private octree node variables.
+};
+-
+
+== The octree class ==
+-
+class Octree {
+  public:
+  Octree constructor.
+  ~Octree(){};
+
+  Octree intersect.
+
+  private:
+  Private octree variables.
+
+  Bounding box overlap.
+};
+-
+
+== Includes ==
+-
+#include <vector>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "RenderObject.hpp"
+#include "BoundingBox.hpp"
+#include "Ray.hpp"
+#include "Intersection.hpp"
+-
+
+== Include guard ==
+-
+#ifndef OCTREE_H
+#define OCTREE_H
+
+Includes.
+
+The octree node class.
+
+The octree class.
+
+#endif
+-
+
+== @Octree.hpp ==
+Include guard.

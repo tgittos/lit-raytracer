@@ -1,0 +1,71 @@
+== BoundingBox ==
+A bounding box is a box that will encapsulate some
+geometry or groups of geometries.
+It has an intersect method and it's purpose is to
+be placed into some hierarchy or spatial data
+structure in order to speed up rendering time.
+
+== Constructor ==
+Given two points, the min of all axis for the box
+and the max of all axis for the box, construct
+a box.
+-
+BoundingBox(glm::vec3 min, glm::vec3 max);
+-
+
+== Intersect ==
+Check if a ray intersects with this box.
+-
+bool Intersect(glm::vec3 rayOrigin, glm::vec3 rayDirection, float t_max);
+-
+
+== Private variables ==
+-
+glm::vec3 _min;
+glm::vec3 _max;
+-
+
+== Getters for private variables ==
+-
+glm::vec3 GetMin() { return _min; }
+glm::vec3 GetMax() { return _max; }
+-
+
+== The class ==
+-
+class BoundingBox {
+  public:
+  Constructor.
+  ~BoundingBox(){};
+
+  Getters for private variables.
+
+  Intersect.
+
+  private:
+  Private variables.
+};
+-
+
+== Includes ==
+-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "Ray.hpp"
+-
+
+== Include guard ==
+-
+#ifndef BOUNDING_BOX_H
+#define BOUNDING_BOX_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @BoundingBox.hpp ==
+Include guard.

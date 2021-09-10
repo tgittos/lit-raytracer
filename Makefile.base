@@ -1,0 +1,79 @@
+####################################################################
+# Binaries to create
+####################################################################
+
+# The game binary
+EXECUTABLES = raytracer
+
+####################################################################
+# Base variables
+####################################################################
+
+# OSTYPE is not set by default on OS X
+ifndef OSTYPE
+	OSTYPE = $(shell uname -s)
+endif
+
+# Select compiler
+CXX = g++
+
+# Flags passed to the C++ compiler.
+CXXFLAGS = -g -Wall -Wextra -fopenmp
+
+# Source code directory
+SRC_DIR = src
+
+####################################################################
+# Game related variables
+####################################################################
+
+# Include directory
+IFLAGS = -Isrc -Iinclude -Iglm
+
+# Link flags for Linux
+LDFLAGS =
+
+# Link flags for OS X, overrides Linux
+ifeq "$(OSTYPE)" "Darwin"
+	LDFLAGS = -lfreeimage
+endif
+
+####################################################################
+# Project build targets
+####################################################################
+
+.PHONY: all clean includes
+.DEFAULT: all
+
+all: $(EXECUTABLES)
+
+clean :
+	rm -Rf bin
+	rm *.o *.png
+
+includes:
+	literati tangle -o src/. lit/include
+
+raytracer: Main.o raytracer.o
+	mkdir -p bin
+	$(CXX) Main.o raytracer.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
+
+####################################################################
+# Library build targets
+####################################################################
+
+raytracer.o: includes fileformats.o shapes.o renderobjects.o Octree.o Intersection.o Light.o Material.o Ray.o Image.o Scene.o Transform.o Camera.o
+	ld -r fileformats.o shapes.o renderobjects.o Octree.o Intersection.o Light.o Material.o Ray.o Image.o Scene.o Transform.o Camera.o -o raytracer.o
+
+shapes.o: includes BoundingBox.o Sphere.o TriMesh.o
+	ld -r BoundingBox.o Sphere.o TriMesh.o -o shapes.o
+
+renderobjects.o: includes Primitive.o
+	ld -r Primitive.o -o renderobjects.o
+
+fileformats.o: includes FileFormat.o CS1841X.o
+	ld -r FileFormat.o CS1841X.o -o fileformats.o
+
+####################################################################
+# Auto generated build targets
+####################################################################

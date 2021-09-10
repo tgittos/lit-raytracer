@@ -1,0 +1,78 @@
+== Transform ==
+Write a description on what this class responsible for,
+and what it does at a 10,000ft view.
+Do not cover how it does what it does. That is for the
+class implementation.
+
+== Pi ==
+-
+const static float PI = 3.14159265;
+-
+
+== Rotate ==
+Given an angle in degrees and a vector axis, create a
+rotation matrix.
+-
+static glm::mat3 rotate(const float degrees, const glm::vec3& axis);
+-
+
+== Scale ==
+Given an amount along the x, y, z axes, create a scale
+matrix.
+-
+static glm::mat4 scale(const float &sx, const float &sy, const float &sz);
+-
+
+== Translate ==
+Given an amount along the x, y, z axes, create a translation
+matrix.
+-
+static glm::mat4 translate(const float &tx, const float &ty, const float &tz);
+-
+
+== Up Vector ==
+Normalize the up direction and construct a co-ordinate
+frame.
+-
+static glm::vec3 upvector(const glm::vec3 &up, const glm::vec3 &zvec);
+-
+
+== The class ==
+-
+class Transform {
+  public:
+  Pi.
+
+  Transform(){};
+  ~Transform(){};
+
+  Rotate.
+
+  Scale.
+
+  Translate.
+
+  Up Vector.
+};
+-
+
+== Includes ==
+-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+-
+
+== Include guard ==
+-
+#ifndef TRANSFORM_H
+#define TRANSFORM_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Transform.hpp ==
+Include guard.

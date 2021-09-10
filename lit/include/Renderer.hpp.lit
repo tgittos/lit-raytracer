@@ -1,0 +1,43 @@
+== Renderer ==
+The renderer is responsible for the nuts and bolts
+rendering of the image. It has a single method,
+RenderToImage, which will output an image of a given
+filename.
+
+== Render to image ==
+Render to image takes a scene description
+and uses that to generate a final image.
+-
+void static RenderToImage(Scene* scene);
+-
+
+== The class ==
+-
+class Renderer {
+  public:
+  Renderer(){};
+  ~Renderer(){};
+
+  Render to image.
+};
+-
+
+== Includes ==
+-
+#include "Scene.hpp"
+-
+
+== Include guard ==
+-
+#ifndef RENDERER_H
+#define RENDERER_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Renderer.hpp ==
+Include guard.

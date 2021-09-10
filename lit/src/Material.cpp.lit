@@ -1,0 +1,107 @@
+== Material ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Get color ==
+When calculating l, note that the ray returned from
+GetRayToLight is from the intersection to the light.
+We need it to be from the light to the intersection point.
+So we flip the vector.
+Note that sometimes we can accumulate more intensity
+than 1.0, so we need to clamp the values before we return
+the color.
+-
+glm::vec3 Material::GetColor(std::vector<Light*> lights, Intersection* intersection, glm::vec3 reflectColor) {
+  glm::vec3 color = _ambient + _emission;
+  for (std::vector<Light*>::iterator itr = lights.begin(); itr != lights.end(); ++itr) {
+    Light* light = *itr;
+    float d = glm::length(light->GetLocation() - intersection->GetPoint());
+    float attenuation = 1.f / (_attenuation[0] + _attenuation[1] * d + _attenuation[2] * d * d);
+    glm::vec3 n = intersection->GetNormal();
+    glm::vec3 l = glm::normalize(light->GetRayToLight(*intersection).GetDirection());
+    glm::vec3 h = glm::normalize(l + -intersection->GetRay().GetDirection());
+    float ndotl = glm::dot(n, l);
+    float ndoth = glm::dot(n, h);
+    glm::vec3 lambert = _diffuse * std::max(0.f, ndotl);
+    glm::vec3 phong = _specular * std::pow(std::max(0.f, ndoth), _shininess);
+    color += light->GetColor() * attenuation * (lambert + phong);
+    //Debug material.
+  }
+  color += _specular * reflectColor;
+  for (int i = 0; i < 3; ++i) { color[i] = std::min(1.f, color[i]); }
+  return color;
+}
+-
+
+== Debug material ==
+-
+std::cout << "Calculating lighting for intersection" <<std::endl;
+std::cout << "Intersection normal (n): [" << n[0] << ", " << n[1] << ", " << n[2] << "]" << std::endl;
+glm::vec3 intp = intersection->GetRay().GetDirection();
+std::cout << "Intersection direction (from eye): [" << intp[0] << ", " << intp[1] << ", " << intp[2] << "]" << std::endl;
+std::cout << "Intersection direction (to eye) (v): [" << -intp[0] << ", " << -intp[1] << ", " << -intp[2] << "]" << std::endl;
+std::cout << "Ray to light (l): [" << l[0] << ", " << l[1] << ", " << l[2] << "]" << std::endl;
+std::cout << "Half angle between light and eye: (h) [" << h[0] << ", " << h[1] << ", " << h[2] << "]" << std::endl;
+std::cout << "ndotl: " << ndotl << std::endl;
+std::cout << "ndoth: " << ndoth << std::endl;
+
+glm::vec3 lightCol = light->GetColor();
+std::cout << "Light color: [" << lightCol[0] << ", " << lightCol[1] << ", " << lightCol[2] << "]" << std::endl;
+std::cout << "Diffuse color: [" << _diffuse[0] << ", " << _diffuse[1] << ", " << _diffuse[2] << "]" << std::endl;
+std::cout << "Specular color: [" << _specular[0] << ", " << _specular[1] << ", " << _specular[2] << "]" << std::endl;
+std::cout << "Shininess: " << _shininess << std::endl;
+std::cout << "lambert: [" << lambert[0] << ", " << lambert[1] << ", " << lambert[2] << "]" << std::endl;
+std::cout << "phong: [" << phong[0] << ", " << phong[1] << ", " << phong[2] << "]" << std::endl;
+std::cout << "Final color intensity: [" << color[0] << ", " << color[1] << ", " << color[2] << "]" << std::endl;
+-
+
+== Setters for private variables ==
+-
+void Material::SetAmbient(float r, float g, float b) {
+  _ambient = glm::vec3(r, g, b);
+}
+
+void Material::SetDiffuse(float r, float g, float b) {
+  _diffuse = glm::vec3(r, g, b);
+}
+
+void Material::SetSpecular(float r, float g, float b) {
+  _specular = glm::vec3(r, g, b);
+}
+
+void Material::SetEmission(float r, float g, float b) {
+  _emission = glm::vec3(r, g, b);
+}
+
+void Material::SetAttenuation(float a, float b, float c) {
+  _attenuation = glm::vec3(a, b, c);
+}
+-
+
+== Constructor ==
+Set the attenuation to a reasonable value.
+-
+Material::Material():
+  _attenuation(glm::vec3(1.f, 0.f, 0.f)) {}
+-
+
+== Includes ==
+-
+#include <iostream>
+#include <algorithm>
+#include "Material.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+
+Setters for private variables.
+
+Get color.
+-
+
+== @Material.cpp ==
+Wrapper.

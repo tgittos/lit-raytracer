@@ -1,0 +1,84 @@
+== TriMesh ==
+A TriMesh is a grouping of triangles that define
+a free form shape. It will have a list of vertices
+and faces.
+
+== Add vertex ==
+Add a vertex to the internal list of vertices.
+-
+void AddVertex(float x, float y, float z);
+-
+
+== Add triangle ==
+Add a triangle to the internal list of vertices.
+Note we do not bother verifying that the vertex
+exists.
+-
+void AddTriangle(int v1, int v2, int v3);
+-
+
+== Intersects ==
+Test if a ray hits any triangle defined by the triangle
+mesh.
+-
+Intersection* Intersects(Ray ray, float t_max);
+-
+
+== Get bounding box ==
+Apply the transformation on this object and return
+a new bounding box.
+-
+BoundingBox GetBoundingBox();
+-
+
+== Private variables ==
+* list of vertices
+* list of triangles defined by vertex indices
+-
+static const float EPSILON = 0.0001f;
+std::vector<glm::vec3> _vertices;
+std::vector<glm::vec3> _triangles;
+-
+
+== The class ==
+-
+class TriMesh : public Shape{
+  public:
+  TriMesh(){};
+  ~TriMesh(){};
+
+  Get bounding box.
+
+  Add vertex.
+  Add triangle.
+  Intersects.
+
+  private:
+  Private variables.
+};
+-
+
+== Includes ==
+-
+#include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include "Shape.hpp"
+#include "Ray.hpp"
+#include "Intersection.hpp"
+-
+
+== Include guard ==
+-
+#ifndef TRI_MESH_H
+#define TRI_MESH_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @TriMesh.hpp ==
+Include guard.

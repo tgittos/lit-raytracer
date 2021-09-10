@@ -1,0 +1,99 @@
+== Image ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Save file ==
+Save the colors in the color array to an actual image.
+First, initialize FreeImage and tell it what data to use,
+the width and height of the image, and how that data is
+laid out.
+-
+void Image::SaveFile(const std::string filename) {
+  FIBITMAP* img = FreeImage_ConvertFromRawBits(_color, _width, _height, _width * 3, 24, 0xFF0000, 0x00FF00, 0x0000FF, true);
+  FreeImage_Save(FIF_PNG, img, filename.c_str(), 0);
+  FreeImage_DeInitialise();
+}
+-
+
+== Set pixel color ==
+Calculate the offset based off of the pixels x,y
+coordinates and then set the appropriate colors.
+-
+void Image::SetPixelColor(int x, int y, glm::vec3 color) {
+  long offset = (x * 3) + (y * _width * 3);
+  glm::vec3 result = color * glm::vec3(255, 255, 255);
+  _color[offset] = result[2];
+  _color[offset+1] = result[1];
+  _color[offset+2] = result[0];
+}
+-
+
+== Constructor ==
+Take the image width and height and initialize the
+color array so we don't have any nasty memory issues.
+The color array is 3 times the number of pixels, because
+each pixel is 3 bytes - r, g, b
+-
+Image::Image(int width, int height)
+  :_width(width), _height(height) {
+  long numPixels = width * height;
+  _color = new byte[3 * numPixels];
+  for (long i = 0; i < 3 * numPixels; i++) {
+    _color[i] = 0;
+  }
+}
+-
+
+== Destructor ==
+Destroy the color array.
+-
+Image::~Image() {
+  delete _color;
+}
+-
+
+== Copy array data ==
+Copy the array data into a new array.
+-
+  _color = new byte[_width * _height];
+  memcpy(_color, other._color, sizeof(other._color));
+-
+
+== Copy constructor and assignment operator ==
+When creating copies of the image, make sure we get
+a copy of the color as well so we don't share data.
+-
+Image::Image(const Image& other) {
+  Copy array data.
+}
+
+Image& Image::operator=(const Image& other) {
+  Copy array data.
+  return *this;
+}
+-
+
+== Includes ==
+-
+#include <iostream>
+
+#include "Image.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+
+Copy constructor and assignment operator.
+
+Destructor.
+
+Save file.
+
+Set pixel color.
+-
+
+== @Image.cpp ==
+Wrapper.

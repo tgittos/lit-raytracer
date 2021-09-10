@@ -1,0 +1,85 @@
+== RenderObject ==
+A render object is a combination of a geometric
+shape and a material. The ray tracer will interact
+directly with a list of render objects in the
+scene. This is an abstract class that defines how
+other render objects should act.
+
+== Intersects ==
+Test to see if a given ray will intersect with
+any part of the geometry in the render object.
+This may have to eventually return an array
+intersection object instead of a bool.
+-
+virtual Intersection* Intersects(const Ray ray, float t_max) = 0;
+-
+
+== Get color ==
+Get the color for a given object at the point of
+a ray intersection
+-
+virtual glm::vec3 GetColor(std::vector<Light*> lights, Intersection* intersection, glm::vec3 reflectColor) = 0;
+-
+
+== Get material ==
+Get a reference to the material for this render
+object.
+-
+virtual Material* GetMaterial() = 0;
+-
+
+== Get bounding box ==
+Get the bounding box for this object.
+-
+virtual BoundingBox GetBoundingBox() = 0;
+-
+
+== The class ==
+-
+class RenderObject {
+  public:
+  RenderObject(){};
+  ~RenderObject(){};
+
+  Intersects.
+  Get color.
+  Get material.
+  Get bounding box.
+};
+-
+
+== Includes ==
+-
+#include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "Intersection.hpp"
+#include "Ray.hpp"
+-
+
+== Forward declarations ==
+-
+class Ray;
+class Intersection;
+class Light;
+class Material;
+class BoundingBox;
+-
+
+== Include guard ==
+-
+#ifndef RENDER_OBJECT_H
+#define RENDER_OBJECT_H
+
+Includes.
+
+Forward declarations.
+
+The class.
+
+#endif
+-
+
+== @RenderObject.hpp ==
+Include guard.

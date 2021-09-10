@@ -1,0 +1,93 @@
+== Light ==
+Represents a light in the ray tracer. Can be used for
+both point based lights and directional lights.
+A light basically has a position and a color.
+
+== Get ray to light ==
+Directional and point lights are treated a little
+differently. To fasciliate this, we have a method to
+return a ray that describes the path to the light
+dependent on it's type.
+-
+Ray GetRayToLight(Intersection intersection);
+-
+
+== Get t to light ==
+When checking if an object obstructs the ray to the
+light, you don't want to consider intersections
+that occur past the light. Therefore we need to bound
+the t interval we're searching for an intersection
+in
+-
+float GetTToLight(Ray ray);
+-
+
+== Private variables ==
+* A location vector
+* A color vector
+* A flag to differentiate a point from a directional
+light
+-
+glm::vec3 _location;
+glm::vec3 _color;
+bool _isDirectional;
+-
+
+== Constructor ==
+-
+Light(float x, float y, float z, float r, float g, float b, bool isDirectional);
+-
+
+== Getters for private variables ==
+-
+glm::vec3 GetLocation() { return _location; }
+glm::vec3 GetColor() { return _color; }
+bool IsDirectional() { return _isDirectional; }
+-
+
+== The class ==
+-
+class Light {
+  public:
+  Constructor.
+  ~Light(){};
+
+  Getters for private variables.
+
+  Get ray to light.
+
+  Get t to light.
+
+  private:
+  Private variables.
+};
+-
+
+== Includes ==
+-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+-
+
+== Forward declarations ==
+-
+class Ray;
+class Intersection;
+-
+
+== Include guard ==
+-
+#ifndef LIGHT_H
+#define LIGHT_H
+
+Includes.
+
+Forward declarations.
+
+The class.
+
+#endif
+-
+
+== @Light.hpp ==
+Include guard.

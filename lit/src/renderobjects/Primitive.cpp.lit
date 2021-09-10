@@ -1,0 +1,54 @@
+== Primitive ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Intersects ==
+-
+Intersection* Primitive::Intersects(const Ray ray, float t_max) {
+  return _geometry->Intersects(ray, t_max);
+}
+-
+
+== Get color ==
+-
+glm::vec3 Primitive::GetColor(std::vector<Light*> lights, Intersection* intersection, glm::vec3 reflectColor) {
+  return _material->GetColor(lights, intersection, reflectColor);
+}
+-
+
+== Constructor ==
+-
+Primitive::Primitive(Shape* geometry, Material* material)
+  :_geometry(geometry), _material(material) {}
+-
+
+== Destructor ==
+Destroy the reference to the geometry.
+-
+Primitive::~Primitive() {
+  delete _geometry;
+  delete _material;
+}
+-
+
+== Includes ==
+-
+#include <iostream>
+#include "Primitive.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+
+Destructor.
+
+Intersects.
+
+Get color.
+-
+
+== @Primitive.cpp ==
+Wrapper.

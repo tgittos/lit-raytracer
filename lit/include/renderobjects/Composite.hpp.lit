@@ -1,0 +1,33 @@
+== Composite ==
+A composite render object will contain other
+render objects, which in turn may contain other
+render objects or primitives. Each of these will
+have it's own material.
+
+== The class ==
+-
+class Composite {
+  public:
+  Composite(){};
+  ~Composite(){};
+};
+-
+
+== Includes ==
+-
+-
+
+== Include guard ==
+-
+#ifndef COMPOSITE_H
+#define COMPOSITE_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Composite.hpp ==
+Include guard.

@@ -1,0 +1,81 @@
+== Intersection ==
+An intersection is the detail about a ray-surface
+intersection in the ray tracer. It contains information
+about where the ray intersected with the surface,
+and what the intersection point's normal is.
+
+== Constructor with intersection and normal ==
+-
+Intersection(Ray ray, glm::vec3 point, float t, glm::vec3 normal);
+-
+
+== Getters for private variables ==
+-
+glm::vec3 GetPoint() { return _point; }
+glm::vec3 GetNormal() { return _normal; }
+RenderObject* GetIntersected() { return _intersected; }
+Ray GetRay() { return _ray; }
+float GetT() { return _t; }
+-
+
+== Set intersected object ==
+-
+void SetIntersected(RenderObject* value) { _intersected = value; }
+-
+
+== Private variables ==
+* intersection points
+* normal
+* intersected object
+# the ray that did the intersection
+-
+glm::vec3 _point;
+glm::vec3 _normal;
+RenderObject* _intersected;
+Ray _ray;
+float _t;
+-
+
+== The class ==
+-
+class Intersection {
+  public:
+  Constructor with intersection and normal.
+  ~Intersection(){};
+
+  Getters for private variables.
+  Set intersected object.
+
+  private:
+  Private variables.
+};
+-
+
+== Includes ==
+-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include "Ray.hpp"
+-
+
+== Forward declarations ==
+-
+class RenderObject;
+-
+
+== Include guard ==
+-
+#ifndef INTERSECTION_H
+#define INTERSECTION_H
+
+Includes.
+
+Forward declarations.
+
+The class.
+
+#endif
+-
+
+== @Intersection.hpp ==
+Include guard.

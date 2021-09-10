@@ -1,0 +1,156 @@
+== BoundingBox ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Intersection ==
+Implementation is outlined in this paper:
+http://people.csail.mit.edu/amy/papers/box-jgt.pdf
+-
+bool BoundingBox::Intersect(glm::vec3 rayOrigin, glm::vec3 rayDirection, float t_max) {
+  //Debug bounding box dimensions.
+  float tmin, tmax, tymin, tymax, tzmin, tzmax;
+  Calculate hit time for x component.
+  Calculate hit time for y component.
+  Check order of x and y plane collisions.
+  Calculate hit time for z component.
+  Check order of x and z plane collisions.
+  Return whether t was in range.
+}
+-
+
+== Debug bounding box dimensions ==
+-
+std::cout << "Debugging bounding box" << std::endl;
+std::cout << "\tBounding box min: [" << _min[0] << ", " << _min[1] << ", " << _min[2] << "]" << std::endl;
+std::cout << "\tBouding box max: [" << _max[0] << ", " << _max[1] << ", " << _max[2] << "]" << std::endl;
+-
+
+== Calculate hit time for x component ==
+How long until the ray hits the x plane, front and
+back?
+We don't care what direction the ray is going in, as
+long as it goes through it.
+-
+float divx = 1 / rayDirection[0];
+if (rayDirection[0] >= 0) {
+  tmin = (_min[0] - rayOrigin[0]) * divx;
+  tmax = (_max[0] - rayOrigin[0]) * divx;
+} else {
+  tmin = (_max[0] - rayOrigin[0]) * divx;
+  tmax = (_min[0] - rayOrigin[0]) * divx;
+}
+-
+
+== Calculate hit time for y component ==
+Same as x component, but y!
+-
+float divy = 1 / rayDirection[1];
+if (rayDirection[1] >= 0) {
+  tymin = (_min[1] - rayOrigin[1]) * divy;
+  tymax = (_max[1] - rayOrigin[1]) * divy;
+} else {
+  tymin = (_max[1] - rayOrigin[1]) * divy;
+  tymax = (_min[1] - rayOrigin[1]) * divy;
+}
+-
+
+== Check order of x and y plane collisions ==
+If the ray intersects with the x plane front after
+it exits the y plan back, or intersects with the y
+plane min after exiting the x plane max, then the
+ray missed the box.
+If it intersected in order, get the smallest
+interval across intersections.
+-
+//Debug x y components.
+if ((tmin > tymax) || (tymin > tmax)) {
+  return false;
+}
+if (tymin > tmin) { tmin = tymin; }
+if (tymax < tmax) { tmax = tymax; }
+-
+
+== Debug x y components ==
+-
+std::cout << "\tAfter x and y components: " << std::endl;
+std::cout << "\t\ttmin: " << tmin << ", tmax: " << tmax << std::endl;
+std::cout << "\t\ttymin: " << tymin << ", tymax: " << tymax << std::endl;
+-
+
+== Calculate hit time for z component ==
+Same as x component, but z!
+-
+float divz = 1 / rayDirection[2];
+if (rayDirection[2] >= 0) {
+  tzmin = (_min[2] - rayOrigin[2]) * divz;
+  tzmax = (_max[2] - rayOrigin[2]) * divz;
+} else {
+  tzmin = (_max[2] - rayOrigin[2]) * divz;
+  tzmax = (_min[2] - rayOrigin[2]) * divz;
+}
+-
+
+
+== Check order of x and z plane collisions ==
+Same as x y order, but with x and z.
+-
+//Debug min z components.
+if ((tmin > tzmax) || (tzmin > tmax)) {
+  return false;
+}
+if (tzmin > tmin) { tmin = tzmin; }
+if (tzmax < tmax) { tmax = tzmax; }
+-
+
+== Debug min z components ==
+-
+std::cout << "\tAfter x,y and z components: " << std::endl;
+std::cout << "\t\ttmin: " << tmin << ", tmax: " << tmax << std::endl;
+std::cout << "\t\ttzmin: " << tzmin << ", tzmax: " << tzmax << std::endl;
+-
+
+== Return whether t was in range ==
+Check if we have a valid intersection by
+-
+//Debug final tmin and tmax.
+float t = 0.f;
+float max_t = std::max(tmin, tmax);
+float min_t = std::min(tmin, tmax);
+if (max_t < 0) { return false; }
+if (min_t > 0) { t = min_t; }
+else { t = max_t; }
+if (t > t_max) { return false; }
+return true;
+-
+
+== Debug final tmin and tmax ==
+-
+std::cout << "\tFinal: " << std::endl;
+std::cout << "\t\ttmin: " << tmin << ", tmax: " << tmax << std::endl;
+-
+
+== Constructor ==
+-
+BoundingBox::BoundingBox(glm::vec3 min, glm::vec3 max)
+  :_min(min), _max(max) {}
+-
+
+== Includes ==
+-
+#include <algorithm>
+#include <iostream>
+
+#include "BoundingBox.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+
+Intersection.
+-
+
+== @BoundingBox.cpp ==
+Wrapper.

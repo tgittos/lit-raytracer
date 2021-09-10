@@ -1,0 +1,108 @@
+== Image ==
+The image is the final rendered image, and contains
+functionality to set pixel colors and write an image
+file out using FreeImage
+
+== Set pixel color ==
+Given a pixel x,y coordinate, set the pixel to the
+given color
+-
+void SetPixelColor(int x, int y, glm::vec3 color);
+-
+
+== Save file ==
+Save the image file out to the given filename
+-
+void SaveFile(const std::string filename);
+-
+
+== Setters for width and height ==
+-
+void SetWidth(int value) { _width = value; }
+void SetHeight(int value) { _height = value; }
+-
+
+== Width and height constructor ==
+Take the width and height of the image during the
+construction.
+We will also initialize the colors array so that
+we don't get any nasty memory issues.
+-
+Image(int width, int height);
+-
+
+== Rule of three ==
+By the C++ rule of three, if a class defines one of the
+following:
+- Destructor
+- Copy constructor
+- Copy assignment operator
+Then it should define all three. Because the image's
+destructor is going to delete the color array, we will
+want to make sure that copying the class will also
+copy the contents of the array
+-
+Image(const Image& other); //copy constructor
+Image& operator=(const Image& other); //copy assignment operator
+-
+
+== Private variables ==
+Private variables include:
+- An array to hold pixel colors
+- image width and height
+-
+byte *_color;
+int _width;
+int _height;
+-
+
+== Create the byte ==
+I want my code to be semantic, so I'm going to typedef in
+a byte type from a unsigned char.
+-
+typedef unsigned char byte;
+-
+
+== The class ==
+-
+class Image {
+  public:
+  Image(){};
+  Width and height constructor.
+  Rule of three.
+  ~Image();
+
+  Setters for width and height.
+
+  Set pixel color.
+  Save file.
+
+  private:
+  Private variables.
+};
+-
+
+== Includes ==
+-
+#include <string>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include "FreeImage.h"
+-
+
+== Include guard ==
+-
+#ifndef IMAGE_H
+#define IMAGE_H
+
+Includes.
+
+Create the byte.
+
+The class.
+
+#endif
+-
+
+== @Image.hpp ==
+Include guard.

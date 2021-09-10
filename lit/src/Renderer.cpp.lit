@@ -1,0 +1,58 @@
+== Renderer ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Render to image ==
+-
+void Renderer::RenderToImage(Scene* scene) {
+  std::cout << "Starting render..." << std::endl;
+  _img = new Image(_width, _height);
+  for (int y = 0; y < _height; y++) {
+    for (int x = 0; x < _width; x++) {
+      Ray ray = _camera->GetRayForPixel(x, y, _width, _height);
+      glm::vec3 color = TraceRay(ray);
+      _img->SetPixelColor(x, y, color);
+      Output progress.
+    }
+  }
+  //Debug material.
+  _img->SaveFile(scene->GetOutputFilename);
+  std::cout << std::endl;
+}
+-
+
+== Output progress ==
+-
+long total = _width * _height;
+long sofar = y * _width + x;
+std::cout << setprecision(2) << "\rProgress: " << (sofar * 100.f / total) << "% (" << sofar << "/" << total << ")";
+-
+
+== Debug material ==
+-
+std::cout << "Tracing test ray" << std::endl;
+Ray ray = _camera->GetRayForPixel(_width / 2, _height / 2, _width, _height);
+glm::vec3 o = ray.GetOrigin();
+glm::vec3 d = ray.GetDirection();
+std::cout << "\tOrigin:\t\t[" << o[0] << ", " << o[1] << ", " << o[2] << "]" << std::endl;
+std::cout << "\tDirection:\t[" << d[0] << ", " << d[1] << ", " << d[2] << "]" << std::endl;
+glm::vec3 color = TraceRay(ray);
+-
+
+== Includes ==
+-
+#include <iostream>
+
+#include "Renderer.hpp"
+#include "Image.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Render to image.
+-
+
+== @Renderer.cpp ==
+Wrapper.

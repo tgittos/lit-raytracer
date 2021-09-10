@@ -1,0 +1,75 @@
+== Shape ==
+A shape is an abstract class that forms the basis
+of all geometric objects, and will define the
+interface that the rest of the system will interact
+with.
+
+== Intersects ==
+Determine if a ray intersects with this shape.
+Uses the mathematical representation of a ray and
+the mathematical representation of the object.
+May need to replace the vec3 with a proper ray that
+encodes where it's coming from.
+-
+virtual Intersection* Intersects(const Ray ray, float t_max) = 0;
+-
+
+== Protected variables ==
+The transform to apply to a geometry.
+-
+glm::mat4 _transform;
+glm::mat4 _inverseTransform;
+BoundingBox* _bb;
+-
+
+== Setters for protected variables ==
+-
+void SetTransform(glm::mat4 value) { _transform = value; _inverseTransform = glm::inverse(value); }
+-
+
+== Get bounding box ==
+-
+virtual BoundingBox GetBoundingBox() = 0;
+-
+
+== The class ==
+-
+class Shape {
+  public:
+  Shape():_bb(NULL){};
+  ~Shape(){ delete _bb; };
+
+  Setters for protected variables.
+  Get bounding box.
+
+  Intersects.
+
+  protected:
+  Protected variables.
+};
+-
+
+== Includes ==
+-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "Intersection.hpp"
+#include "Ray.hpp"
+#include "BoundingBox.hpp"
+-
+
+== Include guard ==
+-
+#ifndef SHAPE_H
+#define SHAPE_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Shape.hpp ==
+Include guard.

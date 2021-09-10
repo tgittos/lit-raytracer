@@ -1,0 +1,106 @@
+== Camera ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Constructor with params ==
+Create a proper basis from the up vector and the camera's
+lookAt vector.
+-
+Camera::Camera(int posX, int posY, int posZ,
+       int lookAtX, int lookAtY, int lookAtZ,
+       int upX, int upY, int upZ,
+       int fovy)
+  : _fovy(fovy) {
+  _position = glm::vec3(posX, posY, posZ);
+  glm::vec3 lookAt = glm::vec3(lookAtX, lookAtY, lookAtZ);
+  glm::vec3 up = glm::normalize(glm::vec3(upX, upY, upZ));
+  Construct coordinate frame.
+}
+-
+
+== Construct coordinate frame ==
+We need to construct a coordinate frame that will
+project from camera space into world space.
+Because we want the camera to look down the -w axis,
+we subtract the look at from the eye pos. If we wanted
+to look down the +w axis, we would reverse this.
+-
+_w = glm::normalize(_position - lookAt);
+_u = glm::normalize(glm::cross(up, _w));
+_v = glm::cross(_w, _u);
+//Debug camera basis.
+-
+
+== Debug camera basis ==
+-
+std::cout << "up: [" << up[0] << ", " << up[1] << ", " << up[2] << "]" << std::endl;
+std::cout << "_u: [" << _u[0] << ", " << _u[1] << "," << _u[2] << "]" << std::endl;
+std::cout << "_v: [" << _v[0] << ", " << _v[1] << "," << _v[2] << "]" << std::endl;
+std::cout << "_w: [" << _w[0] << ", " << _w[1] << "," << _w[2] << "]" << std::endl;
+-
+
+== Get ray for pixel ==
+First, we construct a coordinate frame (described next)
+from the camera's lookAt, position and up vectors.
+Then we figure out the fov in the x direction, assuming
+that the w coord is normalized.
+Then we calculate for a given pixel, the vector that
+will go through the center of it.
+w should be a negative vector, otherwise we should
+subtract it.
+Should possibly replace width and height with aspect
+ratio in constructor.
+-
+Ray Camera::GetRayForPixel(int x, int y, int width, int height) {
+  Fix coordinates.
+  Get normalized pixel deltas.
+  float tanfovy = tan((_fovy * 1.f * Transform::PI / 180) / 2);
+  float alpha = (tanfovy * width * 1.f / height) * pixelNormDeltaX;
+  float beta = tanfovy * pixelNormDeltaY;
+  //std::cout << "alpha:\t" << alpha << std::endl;
+  //std::cout << "beta:\t" << beta << std::endl;
+  return Ray(_position, glm::normalize((alpha * _u) + (beta * _v) - _w));
+}
+-
+
+== Fix coordinates ==
+Cast the ray into the middle of each pixel, instead of
+the left/top edges.
+-
+float fixedX = x + 0.5;
+float fixedY = y + 0.5;
+-
+
+== Get normalized pixel deltas ==
+If we have an image that is width wide and height high,
+and we know that the initial ray is cast into width/2
+and height/2, we can calulate how much of the image each
+pixel will make the ray move as a proportion of the
+image.
+This assumes that we are rendering at the same
+resolution that the image is. If these resolutions are
+different, then the pixel will be a different width and
+height and this will need to be accounted for.
+-
+float pixelNormDeltaX = (fixedX - (width * 1.f / 2.f)) / (width * 1.f / 2.f);
+float pixelNormDeltaY = ((height * 1.f / 2.f) - fixedY) / (height * 1.f / 2.f);
+-
+
+== Includes ==
+-
+#include <iostream>
+#include "Camera.hpp"
+#include "Transform.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor with params.
+
+Get ray for pixel.
+-
+
+== @Camera.cpp ==
+Wrapper.

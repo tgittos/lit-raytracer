@@ -1,0 +1,68 @@
+== Light ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Get ray to light ==
+The ray returned for a point light is in the direction
+from intersection point toward the light.
+This is great for a shadow ray.
+-
+Ray Light::GetRayToLight(Intersection intersection) {
+  float epsilon = 0.001f;
+  glm::vec3 intersectionPoint = intersection.GetPoint();
+  glm::vec3 norm = intersection.GetNormal();
+  glm::vec3 adjustedPoint = intersectionPoint + (norm * epsilon);
+  //Debug ray to light.
+  if (_isDirectional) {
+    return Ray(adjustedPoint, glm::normalize(_location));
+  } else {
+    return Ray(adjustedPoint, glm::normalize(_location - adjustedPoint));
+  }
+}
+-
+
+== Debug ray to light ==
+-
+std::cout << "\tLight location: [" << _location[0] << ", " << _location[1] << ", " << _location[2] << "]" << std::endl;
+std::cout << "\tObject intersection point: [" << intersectionPoint[0] << ", " << intersectionPoint[1] << ", " << intersectionPoint[2] << "]" << std::endl;
+std::cout << "\tSurface normal at intersection: [" << norm[0] << ", " << norm[1] << ", " << norm[2] << "]" << std::endl;
+std::cout << "\tEpsilon adjusted point: [" << adjustedPoint[0] << ", " << adjustedPoint[1] << ", " << adjustedPoint[2] << "]" << std::endl;
+-
+
+== Get t to light ==
+-
+float Light::GetTToLight(Ray ray) {
+  return glm::length(_location - ray.GetOrigin()) / glm::length(ray.GetDirection());
+}
+-
+
+== Constructor ==
+-
+Light::Light(float x, float y, float z, float r, float g, float b, bool isDirectional)
+  :_isDirectional(isDirectional) {
+  _location = glm::vec3(x, y, z);
+  _color = glm::vec3(r, g, b);
+}
+-
+
+== Includes ==
+-
+#include <iostream>
+#include "Light.hpp"
+#include "Ray.hpp"
+#include "Intersection.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+
+Get ray to light.
+
+Get t to light.
+-
+
+== @Light.cpp ==
+Wrapper.

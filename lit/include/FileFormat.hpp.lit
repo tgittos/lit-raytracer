@@ -1,0 +1,89 @@
+== FileFormat ==
+A file format is a particular way of describing a
+scene. Rather than the ray tracer defining how a scene
+should be declared, we want to be adaptive and accept
+other people's formats.
+This is an abstract class - it defines an interface
+that file formats must implement.
+
+== Read into scene ==
+Given a scene, populate it correctly from the file
+format.
+-
+virtual void ReadIntoScene(Scene* scene) = 0;
+-
+
+== Utilities ==
+Some file related and string related functions to
+make life a little easier to deal with
+
+== Read file from disk ==
+Given a path, read the file from the disk and return
+the contents as a vector of strings.
+-
+std::vector<std::string> ReadFile(const std::string& path);
+-
+
+== Split string ==
+Split a string on a given delimiter. This destroys the
+string.
+-
+void Split(std::queue<std::string>& returnVector, const std::string& string, std::string& delimiter);
+-
+
+== Constructor ==
+Take a file name and store it
+-
+FileFormat(std::string filename);
+-
+
+== Protected variables ==
+Store the filename
+-
+std::string _filename;
+-
+
+== The class ==
+-
+class FileFormat {
+  public:
+  Constructor.
+  ~FileFormat(){};
+
+  Read into scene.
+
+  protected:
+  Protected variables.
+
+  Read file from disk.
+  Split string.
+};
+-
+
+== Includes ==
+-
+#include <string>
+#include <queue>
+-
+
+== Forward declarations ==
+-
+class Scene;
+-
+
+== Include guard ==
+-
+#ifndef FILE_FORMAT_H
+#define FILE_FORMAT_H
+
+Includes.
+
+Forward declarations.
+
+The class.
+
+#endif
+-
+
+== @FileFormat.hpp ==
+Include guard.
