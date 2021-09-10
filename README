@@ -1,0 +1,7 @@
+A basic raytracer written for an online MooC on offline rendering.
+
+The raytracer itself is written in Literati (see https://github.com/tgittos/literati) with C++ as the underlying language.
+
+I believe there's a dependency on GLM which has been included in this repository.
+
+This code was written as long time ago and is being committed as a non-trivial example of Literati. It is no longer maintained.
